@@ -29,6 +29,7 @@ public class Main {
         // dessa lista de cartas, pegar 3 aleatórias
 
 
+
         // implementar placar e rodada
         Collections.shuffle(cartas); // embaralhou
         String carta1=  cartas.remove(0);
@@ -43,9 +44,27 @@ public class Main {
         maoComputador.add(cartapc1);
         maoComputador.add(cartapc2);
         maoComputador.add(cartapc3);
-        System.out.println("Mão Jogador: "+maoJogador);
-        System.out.println("Mão Computador: "+maoComputador);
-        compararCartas(carta1, cartapc1, ordemForca);
+
+
+        // é aleatório quem começa
+
+        Random random = new Random();
+        int start= random.nextInt(2);
+        if (start == 0){
+            System.out.println("Jogador vira primeiro");
+            System.out.println("Sua mão: "+ maoJogador);
+            System.out.println("[1][2][3]");
+            int escolha= scan.nextInt();
+            String cartaJogador= maoJogador.get(escolha -1);
+            maoJogador.remove(escolha -1);
+
+            String cartaPc = decisaoPc(cartapc1, cartapc2, cartapc3, cartaJogador, ordemForca);
+            compararCartas(cartaJogador,cartaPc, ordemForca);
+        }
+        //if (start == 1){
+        //    System.out.println("Computador vira primeiro");
+
+        //}
 
     }
     static void compararCartas(String carta1, String carta2, List<String> ordemForca){
@@ -61,7 +80,7 @@ public class Main {
             System.out.println("Empate!");
         }
     }
-    int decisaoPc(String cartapc1, String cartapc2, String cartapc3, String cartaJogador, List<String> ordemForca){
+    static String decisaoPc(String cartapc1, String cartapc2, String cartapc3, String cartaJogador, List<String> ordemForca){
 
         // comparar entre as cartas
 
@@ -90,20 +109,22 @@ public class Main {
         // se a carta fraca já vence, joga ela
         if (ordemForca.indexOf(fraca) > forcaRival){
             cartaEscolhida= fraca;
+            return fraca;
         }
         // se a intermediária vence, joga ela
         else if (ordemForca.indexOf(intermediária) > forcaRival) {
             cartaEscolhida = intermediária;
+            return intermediária;
         }
         // se só a forte vence, joga ela
         else if (ordemForca.indexOf(forte) > forcaRival) {
             cartaEscolhida = forte;
+            return forte;
         }
         // se nenhuma vence, descarta a mais fraca
         else {
             cartaEscolhida = fraca;
+            return fraca;
         }
-
-        return ordemForca.indexOf(cartaEscolhida);
     }
 }
