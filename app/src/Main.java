@@ -61,4 +61,49 @@ public class Main {
             System.out.println("Empate!");
         }
     }
+    int decisaoPc(String cartapc1, String cartapc2, String cartapc3, String cartaJogador, List<String> ordemForca){
+
+        // comparar entre as cartas
+
+        List<String> cartasPc = Arrays.asList(cartapc1, cartapc2, cartapc3);
+
+        //Mapeia cada carta ao seu índice de força
+        Map<String , Integer> mapaForcas = cartasPc.stream()
+                .collect(Collectors.toMap(Function.identity(), ordemForca::indexOf));
+
+        // Ordena as cartas pela força
+
+        List<String> ordenadas = cartasPc.stream()
+                .sorted(Comparator.comparingInt(mapaForcas::get))
+                .collect(Collectors.toList());
+
+        String fraca = ordenadas.get(0);
+        String intermediária = ordenadas.get(1);
+        String forte = ordenadas.get(2);
+
+        String cartaEscolhida;
+        int forcaRival = ordemForca.indexOf(cartaJogador);
+        int forcaForte= ordemForca.indexOf(forte);
+        int forcaIntermediaria= ordemForca.indexOf(intermediária);
+        int forcaFraca = ordemForca.indexOf(fraca);
+
+        // se a carta fraca já vence, joga ela
+        if (ordemForca.indexOf(fraca) > forcaRival){
+            cartaEscolhida= fraca;
+        }
+        // se a intermediária vence, joga ela
+        else if (ordemForca.indexOf(intermediária) > forcaRival) {
+            cartaEscolhida = intermediária;
+        }
+        // se só a forte vence, joga ela
+        else if (ordemForca.indexOf(forte) > forcaRival) {
+            cartaEscolhida = forte;
+        }
+        // se nenhuma vence, descarta a mais fraca
+        else {
+            cartaEscolhida = fraca;
+        }
+
+        return ordemForca.indexOf(cartaEscolhida);
+    }
 }
